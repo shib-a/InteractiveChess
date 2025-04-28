@@ -1,0 +1,9 @@
+package org.project.springbot;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.Streamable;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Streamable<User> findUsersByUsername(String username, Pageable pageable);
+}
