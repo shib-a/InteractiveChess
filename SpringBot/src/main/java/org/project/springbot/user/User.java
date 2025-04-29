@@ -1,4 +1,4 @@
-package org.project.springbot;
+package org.project.springbot.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,8 +11,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
-    @Column
+    @Column(nullable = false)
     String username;
-    @Column
+    @Column(nullable = false)
     Date creationDate;
+    @Column(nullable = false)
+    Integer numberOfMatches;
+    @Column(nullable = false)
+    Integer numberOfWins;
 }

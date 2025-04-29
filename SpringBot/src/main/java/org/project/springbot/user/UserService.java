@@ -1,16 +1,12 @@
-package org.project.springbot;
+package org.project.springbot.user;
 
-import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,6 +17,12 @@ public class UserService {
     }
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+    public Optional<User> getUser(Long id){
+        return userRepository.findById(id);
+    }
+    public void addUser(UserDTO userDTO){
+
     }
 //    public Streamable<User> getUsers() {
 //        var res = userRepository.findUsersByUsername("user", Pageable.ofSize(10));
