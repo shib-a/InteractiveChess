@@ -13,7 +13,9 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "prime-react": "^1.0.0",
-    "primereact": "^10.9.5"
+    "primereact": "^10.9.5",
+    "react-router": "^7.5.3",
+    "axios": "^1.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
