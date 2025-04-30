@@ -15,4 +15,5 @@ public class UserDTO {
     @NotBlank
     @Length(min = 6)
     String password;
+
 }
