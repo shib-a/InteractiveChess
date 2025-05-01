@@ -1,11 +1,9 @@
 package org.project.springbot.user;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +21,14 @@ public class UserService {
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
     }
-    public void addUser(UserDTO userDTO){
-
+    public User save(User user){
+        return userRepository.save(user);
+    }
+    public User create(User user) throws Exception {
+        if (!userRepository.existsByUsername(user.getUsername())){
+            throw new Exception("");
+        }
+        return save(user);
     }
 //    public Streamable<User> getUsers() {
 //        var res = userRepository.findUsersByUsername("user", Pageable.ofSize(10));
