@@ -1,5 +1,7 @@
 package org.project.springbot.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User API", description = "Operations related to a user's account and credentials")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @RequestMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -22,6 +26,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @Operation(summary = "Register a new user")
     @RequestMapping("/register")
     public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO userDTO){
         try{
