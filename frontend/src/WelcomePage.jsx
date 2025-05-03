@@ -14,7 +14,7 @@ const WelcomePage = () => {
     const [loginUsername, setLoginUsername] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const handleLoginButtonClick = async () => {
-        setVisibleLoginDialogue(true);
+        // setVisibleLoginDialogue(true);
         await handleLoginDialogue();
     }
     const handleLoginDialogue = () => {
@@ -22,7 +22,6 @@ const WelcomePage = () => {
     }
     return (
         <div>
-            {/*<span>cock</span>*/}
             {/*<div className={"profileDiv"}>*/}
             {/*    {!isLoggedIn ? (<div>*/}
             {/*        <Button type={"button"} onClick={handleLoginButtonClick} label={"Login"}/>*/}

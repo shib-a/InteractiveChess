@@ -8,9 +8,8 @@ function App() {
 
   return (
       <div>
-          <span>cock</span>
           <WelcomePage/>
-          <Profile/>
+          {/*<Profile/>*/}
       </div>
   )
 }
