@@ -3,21 +3,33 @@ import React, {useEffect, useState} from "react"
 import axios from "axios";
 import {InputText} from "primereact/inputtext";
 import {BoardDataObject} from "./classes/BoardDataObject.js"
+import {figureImages} from "./classes/Figure.js";
 
 const ChessMatch = () => {
-    const size = 8;
+    const height = 8;
     const width = 8;
     const blackFigs=[]
-    const [boardData, setBoardData] = useState([
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-        [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)]
-    ]);
+    const [boardData, setBoardData] = useState(
+    //     [
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
+    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)]
+    // ]
+        BoardDataObject.populateBoards()
+    );
+    const images = import.meta.glob('./resources/figures/**/*.{png,jpg,jpeg}');
+
+    const getImage = async (color, type) => {
+        const path = `./resources/figures/${color}/${color}-${type}.png`;
+        const module = await images[path](); // returns the imported image
+        return module.default;
+    };
+
     const processCellClick = (rowIndex, colIndex) =>{
         const newBoardData = boardData.map((row, rIdx) =>
             row.map((cell, cIdx) => {
@@ -59,7 +71,7 @@ const ChessMatch = () => {
     }
 
     return(<div style={{width:'80%', height:'80%'}}>
-        <table style={{width:"100%", tableLayout:'fixed', borderCollapse: 'collapse'}}>
+        <table style={{minWidth:"1280px", tableLayout:'fixed', borderCollapse: 'collapse'}}>
             <tbody>
             {boardData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
@@ -67,14 +79,16 @@ const ChessMatch = () => {
                         <td key={colIndex}
                             style={{
                                 backgroundColor: getBackgroundColor(rowIndex, colIndex),
-                                width: '50px',
-                                height: '50px',
+                                minWidth: '128px',
+                                minHeight: '128px',
                             }}
-
                         onClick ={() =>
                         {processCellClick(rowIndex, colIndex)}
                         }>
-                            {cell.text}
+                            {
+                                cell.figure.type==="empty"
+                                    ?<img src={figureImages[cell.figure.type]} alt={"/"} style={{objectFit:'contain'}}/>
+                                    :<img src={figureImages[cell.figure.color][cell.figure.type]} alt={"/"} style={{objectFit:'contain'}}/>}
                         </td>
                     ))}
                 </tr>
