@@ -8,11 +8,11 @@ import {Figure, figureImages} from "./classes/Figure.js";
 const ChessMatch = () => {
     const height = 8;
     const width = 8;
-    const currColor = "black";
+    const currColor = "white";
     const [chosenCell, setChosenCell] = useState(null);
     const [choice, setChoice] = useState(null);
     const [boardData, setBoardData] = useState(
-        BoardDataObject.populateBoards()
+        BoardDataObject.populateBoards(currColor)
     );
 
     const processCellClick = (rowIndex, colIndex) =>{
@@ -21,6 +21,7 @@ const ChessMatch = () => {
             console.log(boardData);
             return;
         }
+
         const newBoardData = boardData.map((row, rIdx) =>
             row.map((cell, cIdx) => {
                 // if (rIdx === rowIndex && cIdx === colIndex) {
