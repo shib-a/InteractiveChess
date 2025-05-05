@@ -8,18 +8,9 @@ import {figureImages} from "./classes/Figure.js";
 const ChessMatch = () => {
     const height = 8;
     const width = 8;
-    const blackFigs=[]
+    const currColor = "black";
+    const [chosenFigure, setChosenFigure] = useState(null);
     const [boardData, setBoardData] = useState(
-    //     [
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)]
-    // ]
         BoardDataObject.populateBoards()
     );
     const images = import.meta.glob('./resources/figures/**/*.{png,jpg,jpeg}');
@@ -31,19 +22,31 @@ const ChessMatch = () => {
     };
 
     const processCellClick = (rowIndex, colIndex) =>{
+        if(boardData[rowIndex][colIndex].figure.color !== currColor && chosenFigure === null
+            || chosenFigure === null && boardData[rowIndex][colIndex].figure.type === "empty"){
+            return;
+        }
         const newBoardData = boardData.map((row, rIdx) =>
             row.map((cell, cIdx) => {
                 if (rIdx === rowIndex && cIdx === colIndex) {
                     const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
                     if(newCell.isHighlighted){
                         newCell.setIsHighlighted(false);
+                        setChosenFigure(null);
                     } else {
+                        if(chosenFigure !== null){
+                            setChosenFigure(null);
+                            newCell.setIsHighlighted(true);
+                            return newCell;
+                        }
                         newCell.setIsHighlighted(true);
+                        setChosenFigure(newCell);
                     }
                     return newCell;
                 }
                 const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
                 newCell.setIsHighlighted(false);
+                // setChosenFigure(null);
                 return newCell;
             })
         );
