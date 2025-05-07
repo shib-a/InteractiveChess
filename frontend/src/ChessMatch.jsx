@@ -9,11 +9,14 @@ const ChessMatch = () => {
     const height = 8;
     const width = 8;
     const currColor = "white";
+    const [turn, setTurn] = useState(null);
     const [chosenCell, setChosenCell] = useState(null);
     const [choice, setChoice] = useState(null);
     const [boardData, setBoardData] = useState(
         BoardDataObject.populateBoards(currColor)
     );
+
+
 
     const processCellClick = (rowIndex, colIndex) =>{
         if(boardData[rowIndex][colIndex].figure.color !== currColor && chosenCell === null
@@ -21,42 +24,9 @@ const ChessMatch = () => {
             console.log(boardData);
             return;
         }
-
         const newBoardData = boardData.map((row, rIdx) =>
             row.map((cell, cIdx) => {
-                // if (rIdx === rowIndex && cIdx === colIndex) {
-                //     const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
-                    // if(newCell.isHighlighted){
-                    //     newCell.setIsHighlighted(false);
-                    //     setChoice(null);
-                    // } else {
-                    //     if(chosenCell !== null){
-                    //         if(rIdx === rowIndex && cIdx === colIndex){
-                    //             // const replacingCell = Object.assign(Object.create(Object.getPrototypeOf(chosenFigure)), boardData[rowIndex][colIndex]);
-                    //             newCell.figure = chosenCell.figure;
-                    //             setChoice(null);
-                    //             return newCell;
-                    //         }
-                    //         if(cell.y === chosenCell.y && cell.x === chosenCell.x){
-                    //             newCell.figure.type = "empty";
-                    //             newCell.isHighlighted = false;
-                    //             console.log(cell);
-                    //             setChoice(null);
-                    //             return newCell;
-                    //         } else {
-                    //             setChoice(newCell);
-                    //             newCell.setIsHighlighted(true);
-                    //             return newCell;
-                    //         }
-                    //     }
-                    //     newCell.setIsHighlighted(true);
-                    //     setChoice(newCell);
-                    // }
-                    // return newCell;
-                // }
                 const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
-                // newCell.setIsHighlighted(false);
-                // setChosenCell(choice);
                 return newCell;
             })
         );
@@ -102,9 +72,7 @@ const ChessMatch = () => {
             }
         }
         setBoardData(newBoardData);
-        // console.log(rowIndex, colIndex);
         console.log(choice);
-        // console.log(chosenCell);
     }
     const getBackgroundColor = (rowIndex ,colIndex) => {
         let result = "";

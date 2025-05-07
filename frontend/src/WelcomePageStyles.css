@@ -1,0 +1,32 @@
+header{
+    background-color: white;
+    display: flex;
+    text-align: center;
+    flex-direction: row;
+    background-position: top;
+    margin-bottom: auto;
+    background-attachment: fixed;
+}
+.profileDiv{
+    justify-content: right;
+    margin-left: auto;
+
+}
+.welcomePageDiv{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
