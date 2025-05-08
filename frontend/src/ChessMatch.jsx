@@ -3,52 +3,76 @@ import React, {useEffect, useState} from "react"
 import axios from "axios";
 import {InputText} from "primereact/inputtext";
 import {BoardDataObject} from "./classes/BoardDataObject.js"
-import {figureImages} from "./classes/Figure.js";
+import {Figure, figureImages} from "./classes/Figure.js";
 
 const ChessMatch = () => {
     const height = 8;
     const width = 8;
-    const blackFigs=[]
+    const currColor = "white";
+    const [turn, setTurn] = useState(null);
+    const [chosenCell, setChosenCell] = useState(null);
+    const [choice, setChoice] = useState(null);
     const [boardData, setBoardData] = useState(
-    //     [
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)],
-    //     [new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false),new BoardDataObject(" ",false)]
-    // ]
-        BoardDataObject.populateBoards()
+        BoardDataObject.populateBoards(currColor)
     );
-    const images = import.meta.glob('./resources/figures/**/*.{png,jpg,jpeg}');
 
-    const getImage = async (color, type) => {
-        const path = `./resources/figures/${color}/${color}-${type}.png`;
-        const module = await images[path](); // returns the imported image
-        return module.default;
-    };
+
 
     const processCellClick = (rowIndex, colIndex) =>{
+        if(boardData[rowIndex][colIndex].figure.color !== currColor && chosenCell === null
+            || chosenCell === null && boardData[rowIndex][colIndex].figure.type === "empty"){
+            console.log(boardData);
+            return;
+        }
         const newBoardData = boardData.map((row, rIdx) =>
             row.map((cell, cIdx) => {
-                if (rIdx === rowIndex && cIdx === colIndex) {
-                    const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
-                    if(newCell.isHighlighted){
-                        newCell.setIsHighlighted(false);
-                    } else {
-                        newCell.setIsHighlighted(true);
-                    }
-                    return newCell;
-                }
                 const newCell = Object.assign(Object.create(Object.getPrototypeOf(cell)), cell);
-                newCell.setIsHighlighted(false);
                 return newCell;
             })
         );
+        console.log(chosenCell);
+        for(let i = 0; i < height; i++){
+            for(let j = 0; j < width; j++){
+                if (chosenCell === null) {
+                    if (i === rowIndex && j === colIndex) {
+                        if (newBoardData[i][j].isHighlighted) {
+                            newBoardData[i][j].setIsHighlighted(false);
+                            setChosenCell(null);
+                            break;
+                        }
+                        newBoardData[i][j].setIsHighlighted(true);
+                        setChosenCell(newBoardData[i][j]);
+                        break;
+                    }
+                    newBoardData[i][j].setIsHighlighted(false);
+                } else {
+                    if (i === rowIndex && j === colIndex){
+                        // console.log("here again");
+                        console.log(i,j, chosenCell.x, chosenCell.y);
+                        if (i !== chosenCell.y || j !== chosenCell.x) {
+                            newBoardData[i][j] = Object.assign(Object.create(Object.getPrototypeOf(chosenCell)), chosenCell);
+                            newBoardData[i][j].setIsHighlighted(false);
+                            newBoardData[i][j].setCoordinates(j, i);
+                            console.log(i,j);
+                            newBoardData[chosenCell.y][chosenCell.x] = new BoardDataObject(new Figure("empty"),
+                                false, chosenCell.x, chosenCell.y);
+                            console.log(newBoardData[chosenCell.x][chosenCell.y]);
+                            console.log(chosenCell);
+                            setChoice(chosenCell);
+                            setChosenCell(null);
+                            // break;
+                        } else {
+                            newBoardData[i][j].setIsHighlighted(false);
+                            setChoice(chosenCell);
+                            setChosenCell(null);
+                            // break;
+                        }
+                    }
+                }
+            }
+        }
         setBoardData(newBoardData);
-        console.log(rowIndex, colIndex);
+        console.log(choice);
     }
     const getBackgroundColor = (rowIndex ,colIndex) => {
         let result = "";
