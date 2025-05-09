@@ -7,7 +7,7 @@ import org.springframework.data.util.Streamable;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Streamable<User> findUsersByUsername(String username, Pageable pageable);
+//    Streamable<User> findUsersByUsername(String username, Pageable pageable);
     Optional<User> findUserByUsername(String username);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
     implementation 'com.h2database:h2:2.2.220'
     implementation 'org.postgresql:postgresql:42.7.5'
     implementation 'org.hibernate.orm:hibernate-core:6.6.13.Final'
