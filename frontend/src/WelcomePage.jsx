@@ -15,8 +15,8 @@ const WelcomePage = () => {
     const [loginUsername, setLoginUsername] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const handleLoginButtonClick = async () => {
-        // setVisibleLoginDialogue(true);
-        await handleLoginDialogue();
+        setVisibleLoginDialogue(true);
+        // await handleLoginDialogue();
     }
     const handleLoginDialogue = () => {
 
@@ -27,9 +27,9 @@ const WelcomePage = () => {
                 <div className={"profileDiv"}>
                     {!isLoggedIn ? (<div>
                         <Button type={"button"} onClick={handleLoginButtonClick} label={"Login"}/>
-                        <Dialog style={{ width: '50vw' }} visible={visibleLoginDialogue} onHide={() => setVisibleLoginDialogue(false)}
+                        <Dialog style={{ width: '50vw', display: 'flex', flexDirection: 'column' }} visible={visibleLoginDialogue} onHide={() => setVisibleLoginDialogue(false)}
                                 content={
-                                    <div>
+                                    <div className={"loginDialogDiv"}>
                                         <InputText value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)}
                                                    defaultValue={"Login..."}/>
                                         <InputText value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}
